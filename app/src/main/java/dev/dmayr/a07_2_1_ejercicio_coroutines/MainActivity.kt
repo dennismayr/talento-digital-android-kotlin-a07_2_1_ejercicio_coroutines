@@ -10,7 +10,7 @@ import kotlinx.coroutines.*
 import java.net.URL
 
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
+class MainActivity : AppCompatActivity() {
 
   private val job = Job()
   private val coroutineContextElement = CoroutineScope(Dispatchers.Main + job)
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
   }
 
   private fun downloadImage() {
-    launch {
+    coroutineContextElement.launch {
       progressBar.visibility = View.VISIBLE
       val bitmap: Bitmap? = withContext(Dispatchers.IO) { downloadImageBlocking() }
       if (bitmap != null) {
