@@ -10,10 +10,10 @@ import kotlinx.coroutines.*
 import java.net.URL
 
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
+class MainActivity : AppCompatActivity() {
 
   private val job = Job()
-  private val coroutineContextElement = Dispatchers.Main + job
+  private val coroutineContextElement = CoroutineScope(Dispatchers.Main + job)
   private val urlPictureOfTheDay: String = "https://apod.nasa.gov/apod/image/1908/M61-HST-ESO-S1024.jpg"
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
   }
 
   private fun downloadImage() {
-    launch {
+    coroutineContextElement.launch {
       progressBar.visibility = View.VISIBLE
       val bitmap: Bitmap? = withContext(Dispatchers.IO) { downloadImageBlocking() }
       if (bitmap != null) {
